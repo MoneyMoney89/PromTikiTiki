@@ -1,0 +1,2 @@
+# PromTikiTiki
+Just school project
