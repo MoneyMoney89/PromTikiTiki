@@ -1,19 +1,1148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
+    <!-- ====================================== -->
+    <!-- ОСНОВНЫЕ НАСТРОЙКИ -->
+    <!-- ====================================== -->
+
     <meta charset="UTF-8">
-    <title>НейроПомощник — конструктор промптов для учителей</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="TeacherPromptBuilder — удобный конструктор промптов для учителей. Создавайте планы уроков, тесты, домашние задания и другие учебные материалы с помощью нейросетей.">
+
+    <meta name="theme-color" content="#f8faff">
+
+    <title>TeacherPromptBuilder — конструктор промптов для учителей</title>
+
+    <!-- Подключение CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Подключение JavaScript -->
+    <script defer
+            src="{{ url_for('static', filename='js/app.js') }}">
+    </script>
+
 </head>
+
 <body>
 
-    <h1>TeacherPromptBuilder</h1>
+<!-- ========================================== -->
+<!-- ШАПКА САЙТА -->
+<!-- ========================================== -->
 
-    <p>Сервер работает!</p>
+<header class="site-header">
 
-    <p>
-        Конструктор промптов для учителей.
-    </p>
+    <div class="container header-content">
+
+        <!-- Логотип -->
+        <a href="#home"
+           class="logo"
+           data-page="home"
+           aria-label="TeacherPromptBuilder — главная">
+
+            <span class="logo-icon" aria-hidden="true">✦</span>
+
+            <span class="logo-text">
+                Teacher<span class="logo-accent">Prompt</span>
+            </span>
+
+        </a>
+
+        <!-- Навигация -->
+        <nav class="main-navigation"
+             aria-label="Главная навигация">
+
+            <a href="#home"
+               class="nav-link active"
+               data-page="home"
+               aria-current="page">
+                Главная
+            </a>
+
+            <a href="#catalog"
+               class="nav-link"
+               data-page="catalog">
+                Конструкторы
+            </a>
+
+            <a href="#guide"
+               class="nav-link"
+               data-page="guide">
+                Как пользоваться
+            </a>
+
+        </nav>
+
+        <!-- Кнопка в шапке -->
+        <a href="#catalog"
+           class="button button-primary header-button"
+           data-page="catalog">
+
+            Создать промпт
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ========================================== -->
+<!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+<!-- ========================================== -->
+
+<main id="main-content">
+
+
+    <!-- ====================================== -->
+    <!-- СТРАНИЦА 1. ГЛАВНАЯ -->
+    <!-- ====================================== -->
+
+    <section id="home"
+             class="page-section home-page">
+
+        <!-- Главный экран -->
+        <div class="hero-section">
+
+            <div class="container hero-content">
+
+                <div class="hero-text">
+
+                    <span class="section-badge">
+                        ✨ Искусственный интеллект в образовании
+                    </span>
+
+                    <h1>
+                        Нейросети —
+                        <span class="gradient-text">
+                            ваш помощник
+                        </span>
+                        в преподавании
+                    </h1>
+
+                    <p class="hero-description">
+                        Создавайте эффективные запросы для нейросетей
+                        за несколько кликов.
+
+                        Планы уроков, домашние задания, тесты
+                        и интерактивные занятия — всё в одном месте.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <a href="#catalog"
+                           class="button button-primary button-large"
+                           data-page="catalog">
+
+                            Начать создавать
+                            <span aria-hidden="true">→</span>
+
+                        </a>
+
+                        <a href="#guide"
+                           class="button button-secondary button-large"
+                           data-page="guide">
+
+                            Как это работает?
+
+                        </a>
+
+                    </div>
+
+                    <p class="hero-note">
+                        Бесплатно · Без регистрации · Просто в использовании
+                    </p>
+
+                </div>
+
+                <!-- Декоративный блок -->
+                <div class="hero-visual" aria-hidden="true">
+
+                    <div class="hero-card">
+
+                        <div class="hero-card-header">
+                            <span class="hero-card-icon">✦</span>
+                            Конструктор промптов
+                        </div>
+
+                        <div class="hero-card-body">
+
+                            <div class="preview-line preview-line-long"></div>
+
+                            <div class="preview-line preview-line-medium"></div>
+
+                            <div class="preview-field">
+                                <span>Предмет</span>
+                                <strong>Математика</strong>
+                            </div>
+
+                            <div class="preview-field">
+                                <span>Класс</span>
+                                <strong>7 класс</strong>
+                            </div>
+
+                            <div class="preview-field">
+                                <span>Тема урока</span>
+                                <strong>Линейные уравнения</strong>
+                            </div>
+
+                            <div class="preview-button">
+                                ✨ Создать промпт
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Как это работает -->
+        <section class="features-section"
+                 aria-labelledby="features-title">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Просто и удобно
+                    </span>
+
+                    <h2 id="features-title">
+                        Как это работает?
+                    </h2>
+
+                    <p>
+                        Всего три шага — и качественный запрос
+                        для нейросети готов.
+                    </p>
+
+                </div>
+
+
+                <div class="features-grid">
+
+                    <!-- Шаг 1 -->
+                    <article class="feature-card">
+
+                        <div class="feature-icon" aria-hidden="true">
+                            📚
+                        </div>
+
+                        <span class="feature-number">01</span>
+
+                        <h3>Выберите задачу</h3>
+
+                        <p>
+                            Найдите нужный конструктор:
+                            план урока, тест, домашнее задание
+                            или другой учебный материал.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Шаг 2 -->
+                    <article class="feature-card">
+
+                        <div class="feature-icon" aria-hidden="true">
+                            ⚙️
+                        </div>
+
+                        <span class="feature-number">02</span>
+
+                        <h3>Настройте параметры</h3>
+
+                        <p>
+                            Укажите предмет, класс, тему
+                            и дополнительные требования
+                            к результату.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Шаг 3 -->
+                    <article class="feature-card">
+
+                        <div class="feature-icon" aria-hidden="true">
+                            ✨
+                        </div>
+
+                        <span class="feature-number">03</span>
+
+                        <h3>Получите промпт</h3>
+
+                        <p>
+                            Скопируйте готовый запрос
+                            и отправьте его в выбранную
+                            нейросеть.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Популярные конструкторы -->
+        <section class="popular-section"
+                 aria-labelledby="popular-title">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-label">
+                        Популярные инструменты
+                    </span>
+
+                    <h2 id="popular-title">
+                        С чего начать?
+                    </h2>
+
+                    <p>
+                        Выберите одну из самых популярных
+                        задач преподавателя.
+                    </p>
+
+                </div>
+
+
+                <div class="popular-grid">
+
+                    <button type="button"
+                            class="popular-card"
+                            data-prompt="lesson-plan">
+
+                        <span class="popular-icon" aria-hidden="true">📖</span>
+
+                        <span class="popular-card-title">
+                            План урока
+                        </span>
+
+                        <span class="popular-card-description">
+                            Подробный план занятия с этапами и заданиями
+                        </span>
+
+                        <span class="card-arrow" aria-hidden="true">→</span>
+
+                    </button>
+
+
+                    <button type="button"
+                            class="popular-card"
+                            data-prompt="homework">
+
+                        <span class="popular-icon" aria-hidden="true">📝</span>
+
+                        <span class="popular-card-title">
+                            Домашнее задание
+                        </span>
+
+                        <span class="popular-card-description">
+                            Интересные задания для закрепления материала
+                        </span>
+
+                        <span class="card-arrow" aria-hidden="true">→</span>
+
+                    </button>
+
+
+                    <button type="button"
+                            class="popular-card"
+                            data-prompt="test">
+
+                        <span class="popular-icon" aria-hidden="true">✅</span>
+
+                        <span class="popular-card-title">
+                            Тестовая работа
+                        </span>
+
+                        <span class="popular-card-description">
+                            Проверка знаний по выбранной теме
+                        </span>
+
+                        <span class="card-arrow" aria-hidden="true">→</span>
+
+                    </button>
+
+
+                    <button type="button"
+                            class="popular-card"
+                            data-prompt="interactive">
+
+                        <span class="popular-icon" aria-hidden="true">🎮</span>
+
+                        <span class="popular-card-title">
+                            Интерактив для урока
+                        </span>
+
+                        <span class="popular-card-description">
+                            Игры, викторины и групповые активности
+                        </span>
+
+                        <span class="card-arrow" aria-hidden="true">→</span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="section-action">
+
+                    <a href="#catalog"
+                       class="button button-outline"
+                       data-page="catalog">
+
+                        Смотреть все конструкторы →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+
+    <!-- ====================================== -->
+    <!-- СТРАНИЦА 2. КАТАЛОГ -->
+    <!-- ====================================== -->
+
+    <section id="catalog"
+             class="page-section catalog-page"
+             hidden>
+
+        <div class="container">
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    Библиотека инструментов
+                </span>
+
+                <h1>
+                    Каталог конструкторов
+                </h1>
+
+                <p>
+                    Выберите, какую задачу хотите решить
+                    с помощью искусственного интеллекта.
+                </p>
+
+            </div>
+
+
+            <!-- Поиск -->
+            <div class="catalog-toolbar">
+
+                <div class="search-box">
+
+                    <label for="catalog-search" class="visually-hidden">
+                        Поиск конструктора
+                    </label>
+
+                    <span class="search-icon" aria-hidden="true">🔎</span>
+
+                    <input
+                        type="search"
+                        id="catalog-search"
+                        class="search-input"
+                        placeholder="Найти конструктор..."
+                        autocomplete="off">
+
+                </div>
+
+            </div>
+
+
+            <!-- Категории -->
+            <div id="category-filters"
+                 class="category-filters"
+                 role="group"
+                 aria-label="Фильтр по категориям">
+
+                <button type="button"
+                        class="category-button active"
+                        data-category="all"
+                        aria-pressed="true">
+
+                    Все
+
+                </button>
+
+                <!-- Остальные категории создаст JavaScript -->
+
+            </div>
+
+
+            <!-- Список конструкторов -->
+            <div id="catalog-grid"
+                 class="catalog-grid">
+
+                <!--
+                    Карточки будут автоматически
+                    создаваться JavaScript на основе
+                    data/prompts.json.
+                -->
+
+            </div>
+
+
+            <!-- Если ничего не найдено -->
+            <div id="catalog-empty"
+                 class="empty-state"
+                 hidden>
+
+                <div class="empty-icon" aria-hidden="true">🔎</div>
+
+                <h3>Ничего не найдено</h3>
+
+                <p>
+                    Попробуйте изменить поисковый запрос
+                    или выбрать другую категорию.
+                </p>
+
+            </div>
+
+
+            <!-- Ошибка загрузки -->
+            <div id="catalog-error"
+                 class="error-state"
+                 role="alert"
+                 hidden>
+
+                <h3>Не удалось загрузить конструкторы</h3>
+
+                <p>
+                    Попробуйте обновить страницу.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ====================================== -->
+    <!-- СТРАНИЦА 3. КОНСТРУКТОР -->
+    <!-- ====================================== -->
+
+    <section id="constructor"
+             class="page-section constructor-page"
+             hidden>
+
+        <div class="container">
+
+            <!-- Возврат в каталог -->
+            <a href="#catalog"
+               class="back-link"
+               data-page="catalog">
+
+                ← Все конструкторы
+
+            </a>
+
+
+            <!-- Название конструктора -->
+            <div class="constructor-heading">
+
+                <span id="constructor-category"
+                      class="section-label">
+
+                    Подготовка к уроку
+
+                </span>
+
+                <h1 id="constructor-title">
+                    План урока
+                </h1>
+
+                <p id="constructor-description">
+                    Заполните параметры, чтобы создать
+                    подробный запрос для нейросети.
+                </p>
+
+            </div>
+
+
+            <!-- Основная рабочая область -->
+            <div class="constructor-layout">
+
+
+                <!-- ЛЕВАЯ КОЛОНКА -->
+                <div class="constructor-settings">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    ⚙️ Настройки
+                                </h2>
+
+                                <p>
+                                    Укажите необходимые параметры
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Режим конструктора -->
+                        <div class="mode-switcher">
+
+                            <span class="mode-label">
+                                Режим
+                            </span>
+
+                            <div class="mode-buttons"
+                                 role="group"
+                                 aria-label="Режим конструктора">
+
+                                <button type="button"
+                                        id="simple-mode"
+                                        class="mode-button active"
+                                        aria-pressed="true">
+
+                                    Простой
+
+                                </button>
+
+                                <button type="button"
+                                        id="advanced-mode"
+                                        class="mode-button"
+                                        aria-pressed="false">
+
+                                    Расширенный
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Форма -->
+                        <form id="prompt-form">
+
+                            <div id="prompt-fields"
+                                 class="form-fields">
+
+                                <!--
+                                    JavaScript автоматически
+                                    создаст поля из JSON.
+                                -->
+
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button type="reset"
+                                        id="reset-form"
+                                        class="button button-secondary">
+
+                                    Сбросить
+
+                                </button>
+
+                                <button type="submit"
+                                        id="generate-button"
+                                        class="button button-primary">
+
+                                    ✨ Создать промпт
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ПРАВАЯ КОЛОНКА -->
+                <div class="constructor-result">
+
+                    <div class="panel result-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    ✨ Ваш промпт
+                                </h2>
+
+                                <p>
+                                    Готовый запрос для нейросети
+                                </p>
+
+                            </div>
+
+                            <span class="result-badge">
+                                Результат
+                            </span>
+
+                        </div>
+
+
+                        <!-- Готовый промпт -->
+                        <div class="prompt-preview">
+
+                            <div id="prompt-result"
+                                 class="prompt-result"
+                                 role="status"
+                                 aria-live="polite">
+
+                                Заполните параметры слева,
+                                чтобы получить готовый промпт.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Кнопки -->
+                        <div class="result-actions">
+
+                            <button type="button"
+                                    id="copy-prompt"
+                                    class="button button-primary"
+                                    disabled>
+
+                                📋 Скопировать промпт
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- Сообщение после копирования -->
+                        <p id="copy-message"
+                           class="copy-message"
+                           role="status"
+                           aria-live="polite"></p>
+
+                    </div>
+
+
+                    <!-- Советы -->
+                    <div class="tip-card">
+
+                        <div class="tip-icon" aria-hidden="true">
+                            💡
+                        </div>
+
+                        <div class="tip-content">
+
+                            <h3>
+                                Полезный совет
+                            </h3>
+
+                            <p>
+                                Чем точнее вы укажете тему,
+                                уровень подготовки и желаемый
+                                результат, тем полезнее будет
+                                ответ нейросети.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ====================================== -->
+    <!-- СТРАНИЦА 4. ОБУЧЕНИЕ -->
+    <!-- ====================================== -->
+
+    <section id="guide"
+             class="page-section guide-page"
+             hidden>
+
+        <div class="container">
+
+            <div class="page-heading">
+
+                <span class="section-label">
+                    Основы работы с ИИ
+                </span>
+
+                <h1>
+                    Как правильно писать промпты?
+                </h1>
+
+                <p>
+                    Научитесь создавать понятные и точные
+                    запросы, чтобы получать полезные
+                    ответы от нейросетей.
+                </p>
+
+            </div>
+
+
+            <!-- Что такое промпт -->
+            <article class="guide-block">
+
+                <div class="guide-block-icon" aria-hidden="true">
+                    💬
+                </div>
+
+                <div class="guide-block-content">
+
+                    <h2>
+                        Что такое промпт?
+                    </h2>
+
+                    <p>
+                        Промпт — это запрос или инструкция,
+                        которую человек отправляет нейросети.
+
+                        От качества промпта во многом зависит,
+                        насколько полезным и точным
+                        окажется полученный ответ.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- Структура промпта -->
+            <section class="prompt-structure"
+                     aria-labelledby="structure-title">
+
+                <div class="section-heading">
+
+                    <h2 id="structure-title">
+                        Из чего состоит хороший промпт?
+                    </h2>
+
+                    <p>
+                        Для большинства учебных задач удобно
+                        использовать пять основных элементов.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-grid">
+
+                    <article class="structure-card">
+
+                        <span class="structure-number">01</span>
+
+                        <h3>Роль</h3>
+
+                        <p>
+                            Укажите, в качестве кого
+                            должна отвечать нейросеть.
+                        </p>
+
+                        <div class="structure-example">
+                            Ты — опытный учитель математики.
+                        </div>
+
+                    </article>
+
+
+                    <article class="structure-card">
+
+                        <span class="structure-number">02</span>
+
+                        <h3>Задача</h3>
+
+                        <p>
+                            Объясните, какой результат
+                            хотите получить.
+                        </p>
+
+                        <div class="structure-example">
+                            Разработай план урока.
+                        </div>
+
+                    </article>
+
+
+                    <article class="structure-card">
+
+                        <span class="structure-number">03</span>
+
+                        <h3>Контекст</h3>
+
+                        <p>
+                            Добавьте предмет, класс,
+                            тему и особенности учеников.
+                        </p>
+
+                        <div class="structure-example">
+                            7 класс, тема «Линейные уравнения».
+                        </div>
+
+                    </article>
+
+
+                    <article class="structure-card">
+
+                        <span class="structure-number">04</span>
+
+                        <h3>Требования</h3>
+
+                        <p>
+                            Уточните ограничения и важные
+                            особенности результата.
+                        </p>
+
+                        <div class="structure-example">
+                            Продолжительность — 45 минут.
+                        </div>
+
+                    </article>
+
+
+                    <article class="structure-card">
+
+                        <span class="structure-number">05</span>
+
+                        <h3>Формат</h3>
+
+                        <p>
+                            Укажите, в каком виде
+                            должен быть представлен ответ.
+                        </p>
+
+                        <div class="structure-example">
+                            Представь результат в виде таблицы.
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Сравнение промптов -->
+            <section class="comparison-section"
+                     aria-labelledby="comparison-title">
+
+                <div class="section-heading">
+
+                    <h2 id="comparison-title">
+                        Сравните два запроса
+                    </h2>
+
+                    <p>
+                        Посмотрите, как дополнительные
+                        детали помогают уточнить задачу.
+                    </p>
+
+                </div>
+
+
+                <div class="comparison-grid">
+
+                    <!-- Неудачный запрос -->
+                    <div class="comparison-card comparison-bad">
+
+                        <div class="comparison-header">
+                            <span aria-hidden="true">✕</span>
+                            Слишком общий запрос
+                        </div>
+
+                        <p>
+                            Придумай урок по математике.
+                        </p>
+
+                        <div class="comparison-note">
+                            Не указаны класс, тема,
+                            продолжительность и формат занятия.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Хороший запрос -->
+                    <div class="comparison-card comparison-good">
+
+                        <div class="comparison-header">
+                            <span aria-hidden="true">✓</span>
+                            Подробный запрос
+                        </div>
+
+                        <p>
+                            Ты — опытный учитель математики.
+                            Разработай план урока для 7 класса
+                            по теме «Линейные уравнения».
+
+                            Продолжительность — 45 минут.
+
+                            Включи объяснение нового материала,
+                            практические задания и проверку знаний.
+
+                            Представь план в виде таблицы.
+                        </p>
+
+                        <div class="comparison-note">
+                            Нейросеть получает конкретную задачу
+                            и понятные требования к результату.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Дополнительная информация -->
+            <div class="guide-warning">
+
+                <span class="warning-icon" aria-hidden="true">⚠️</span>
+
+                <div>
+
+                    <h3>
+                        Важно помнить
+                    </h3>
+
+                    <p>
+                        Нейросети могут допускать ошибки.
+                        Всегда проверяйте факты, ответы
+                        и соответствие материалов учебной программе.
+
+                        Не передавайте публичным нейросетям
+                        персональные данные учеников.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Переход к практике -->
+            <div class="guide-action">
+
+                <h2>
+                    Готовы попробовать?
+                </h2>
+
+                <p>
+                    Выберите подходящий конструктор
+                    и создайте свой первый промпт.
+                </p>
+
+                <a href="#catalog"
+                   class="button button-primary button-large"
+                   data-page="catalog">
+
+                    Перейти к конструкторам →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- ========================================== -->
+<!-- ПОДВАЛ САЙТА -->
+<!-- ========================================== -->
+
+<footer class="site-footer">
+
+    <div class="container footer-content">
+
+        <div class="footer-brand">
+
+            <span class="footer-logo">
+                ✦ TeacherPrompt
+            </span>
+
+            <p>
+                Умный помощник для современных учителей.
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#home"
+               data-page="home">
+                Главная
+            </a>
+
+            <a href="#catalog"
+               data-page="catalog">
+                Конструкторы
+            </a>
+
+            <a href="#guide"
+               data-page="guide">
+                Инструкция
+            </a>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 TeacherPromptBuilder
+            </p>
+
+            <p>
+                Образовательный школьный проект
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
 
 </body>
-
 </html>
