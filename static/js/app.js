@@ -8,6 +8,41 @@
 
   const API_URL = '/api/prompts';
   const PAGE_IDS = ['home', 'catalog', 'constructor', 'guide'];
+  const COMMON_OPTIONS = {
+    subject: ['Математика', 'Русский язык', 'Литература', 'Иностранный язык',
+      'История', 'Обществознание', 'География', 'Биология', 'Физика', 'Химия', 'Информатика'],
+    grade: Array.from({ length: 11 }, (_, index) => `${index + 1} класс`)
+  };
+  // Советы для самостоятельного составления запросов к ИИ.
+  // Редактируйте этот массив, чтобы менять набор подсказок.
+  const PROMPT_TIPS = [
+    'Добавляйте контекст: укажите тему, класс, уровень подготовки и что ученики уже знают. Так ответ будет точнее.',
+    'Сначала сформулируйте цель: что именно нужно получить — план урока, пять упражнений или критерии оценивания?',
+    'Задавайте формат ответа: например, таблица с этапами, временем, действиями учителя и учеников.',
+    'Указывайте ограничения: длительность занятия, доступные материалы и то, что нельзя использовать.',
+    'Приводите небольшой пример желаемого результата, если вам важны стиль или структура ответа.',
+    'Большую задачу удобно делить на части: сначала план, затем задания, после — критерии проверки.',
+    'Если первый ответ не подошёл, уточните запрос: попросите упростить объяснение или добавить практику.',
+    'Просите нейросеть разделять задания для учеников и ответы для учителя — так результат проще использовать.',
+    'Указывайте целевую аудиторию: одно объяснение не будет одинаково полезно для 5-го и 10-го класса.',
+    'Не ограничивайтесь фразой «сделай интересно». Напишите, что именно вам нужно: игра, обсуждение или работа в группах.',
+    'Если тема сложная, попросите объяснить её по шагам и привести понятный пример, а затем задачу для тренировки.',
+    'Проверяйте результат нейросети: даже подробный промпт не исключает ошибок в фактах и расчётах.'
+  ];
+  let previousTipIndex = -1;
+
+  function showRandomPromptTip() {
+    const tipElement = $('#random-prompt-tip');
+    if (!tipElement || !PROMPT_TIPS.length) return;
+    let index = Math.floor(Math.random() * PROMPT_TIPS.length);
+    // При очередном открытии не показываем тот же совет подряд.
+    if (PROMPT_TIPS.length > 1 && index === previousTipIndex) {
+      index = (index + 1 + Math.floor(Math.random() * (PROMPT_TIPS.length - 1))) % PROMPT_TIPS.length;
+    }
+    previousTipIndex = index;
+    tipElement.textContent = PROMPT_TIPS[index];
+  }
+
   const EMPTY_VALUE = 'Не указано';
   const state = {
     prompts: [],
@@ -35,13 +70,15 @@
     if (element) element.textContent = value;
   }
 
+  let visiblePage = null;
+
   function decodeRoute() {
     // Поддерживаем #home, #catalog, #guide, #constructor/lesson-plan.
     const hash = window.location.hash.slice(1);
     const [page, ...idSegments] = hash.split('/');
     return {
       page: PAGE_IDS.includes(page) ? page : 'home',
-      promptId: idSegments.length ? decodeURIComponent(idSegments.join('/')) : null
+      promptId: idSegments.join('/') || null
     };
   }
 
@@ -49,41 +86,50 @@
     const hash = page === 'constructor' && promptId
       ? `#constructor/${encodeURIComponent(promptId)}`
       : `#${page}`;
-    if (window.location.hash === hash) {
-      applyRoute();
-    } else {
-      window.location.hash = hash;
-    }
+    if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+    applyRoute(true);
   }
 
-  function applyRoute() {
+  function applyRoute(animate = false) {
     const { page, promptId } = decodeRoute();
     if (page === 'constructor') {
       const id = promptId || state.selectedPrompt?.id;
-      const item = state.prompts.find(prompt => prompt.id === id);
+      const item = state.prompts.find(prompt => encodeURIComponent(prompt.id) === id || prompt.id === id);
       if (!item) {
         if (!state.loadError && state.prompts.length) changePage('catalog');
         else showOnlyPage('catalog');
         return;
       }
-      if (state.selectedPrompt?.id !== id) openPrompt(item);
+      if (state.selectedPrompt?.id !== item.id) openPrompt(item);
     }
-    showOnlyPage(page);
+    showOnlyPage(page, animate);
   }
 
-  function showOnlyPage(page) {
-    for (const id of PAGE_IDS) {
-      const section = document.getElementById(id);
-      if (section) section.hidden = id !== page;
+  function showOnlyPage(page, animate = false) {
+    const screen = page === 'catalog' ? 'home' : page;
+    const screenChanged = visiblePage !== screen;
+    const section = document.getElementById(screen);
+    for (const id of ['home', 'constructor', 'guide']) {
+      document.getElementById(id).hidden = id !== screen;
     }
-    $$('.nav-link').forEach(link => {
-      const active = link.dataset.page === page ||
-        (page === 'constructor' && link.dataset.page === 'catalog');
-      link.classList.toggle('active', active);
-      if (active) link.setAttribute('aria-current', 'page');
-      else link.removeAttribute('aria-current');
-    });
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    visiblePage = screen;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior = animate && !reduceMotion && !screenChanged ? 'smooth' : 'instant';
+    if (page === 'catalog') {
+      document.getElementById('catalog').scrollIntoView({ behavior, block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior });
+    }
+
+    if (animate) {
+      const heading = (page === 'catalog' ? document.getElementById('catalog') : section)
+        .querySelector('h1, h2');
+      if (heading) {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }
+    }
   }
 
   async function loadPrompts() {
@@ -105,7 +151,7 @@
       $('#catalog-error').hidden = true;
       drawFilters();
       drawCatalog();
-      applyRoute();
+      if (decodeRoute().page === 'constructor') applyRoute();
     } catch (error) {
       console.error('Не удалось загрузить конструкторы:', error);
       state.loadError = true;
@@ -180,6 +226,7 @@
   function openPrompt(item) {
     saveDraft();
     state.selectedPrompt = item;
+    showRandomPromptTip();
     state.mode = 'simple';
     state.generatedText = '';
     setText('#constructor-title', item.title);
@@ -188,6 +235,45 @@
     setText('#copy-message', '');
     setMode('simple', false);
     buildForm();
+  }
+
+  function buildChoiceField(row, label, input, field) {
+    const choices = COMMON_OPTIONS[field.id];
+    const picker = make('select', 'form-control');
+    picker.id = `${input.id}-choice`;
+    label.htmlFor = picker.id;
+    picker.required = input.required;
+    picker.append(new Option('Выберите вариант', ''));
+    for (const choice of choices) picker.append(new Option(choice, choice));
+    const customOption = new Option('Свой вариант…', '');
+    picker.append(customOption);
+
+    const savedValue = input.value;
+    const savedChoice = [...picker.options].find(option => option !== customOption && option.value === savedValue);
+    if (savedChoice) savedChoice.selected = true;
+    else customOption.selected = true;
+
+    const customField = make('div', 'custom-field');
+    const customLabel = make('label', 'form-label', `${field.label} — свой вариант`);
+    customLabel.htmlFor = input.id;
+    customField.append(customLabel, input);
+    row.append(label, picker, customField);
+
+    function syncChoice(focus = false) {
+      const isCustom = picker.options[picker.selectedIndex] === customOption;
+      customField.hidden = !isCustom;
+      input.required = Boolean(field.required) && isCustom;
+      // Служебное значение требуется только для проверки самого списка.
+      customOption.value = isCustom ? 'custom' : '';
+      if (!isCustom) input.value = picker.value;
+      if (isCustom && focus) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    picker.addEventListener('input', () => syncChoice(true));
+    syncChoice();
   }
 
   function buildForm() {
@@ -207,8 +293,12 @@
         label.append(required);
       }
 
+      const hasChoices = Object.hasOwn(COMMON_OPTIONS, field.id);
       let input;
-      if (field.type === 'textarea') {
+      if (hasChoices) {
+        input = make('input', 'form-control');
+        input.type = 'text';
+      } else if (field.type === 'textarea') {
         input = make('textarea', 'form-control');
         input.rows = 4;
       } else if (field.type === 'select') {
@@ -241,7 +331,11 @@
       input.value = Object.hasOwn(values, field.id)
         ? values[field.id]
         : (field.default !== undefined ? String(field.default) : '');
-      row.append(label, input);
+      if (hasChoices) {
+        buildChoiceField(row, label, input, field);
+      } else {
+        row.append(label, input);
+      }
       wrapper.append(row);
     }
     updatePreview();
@@ -294,7 +388,7 @@
     const validFields = activeForm ? activeForm.checkValidity() : false;
     if (!allRequired || !validFields) {
       state.generatedText = '';
-      result.textContent = 'Заполните обязательные поля слева, чтобы получить готовый промпт.';
+      result.textContent = 'Проверьте обязательные поля и допустимые значения, чтобы получить промпт.';
       copy.disabled = true;
       return;
     }
@@ -377,7 +471,7 @@
       event.preventDefault();
       saveDraft();
       updatePreview();
-      if (state.generatedText) $('#prompt-result')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (state.generatedText) $('#prompt-result')?.scrollIntoView({ block: 'nearest' });
     });
     $('#prompt-form')?.addEventListener('reset', event => {
       event.preventDefault();
@@ -387,7 +481,7 @@
       setText('#copy-message', 'Настройки сброшены.');
     });
     $('#copy-prompt')?.addEventListener('click', copyPrompt);
-    window.addEventListener('hashchange', applyRoute);
+    window.addEventListener('popstate', () => applyRoute(true));
   }
 
   function init() {
